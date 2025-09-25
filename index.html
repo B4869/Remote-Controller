@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="th">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ESP Remote Controller</title>
     <style>
       * {
@@ -12,7 +12,7 @@
       }
 
       body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         display: flex;
@@ -109,13 +109,18 @@
       }
 
       .btnAction::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
         transition: left 0.5s;
       }
 
@@ -188,9 +193,15 @@
       }
 
       @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.5; }
-        100% { opacity: 1; }
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          opacity: 1;
+        }
       }
 
       .footer {
@@ -258,14 +269,15 @@
         <button class="btnAction">➡</button>
       </div>
 
-      <div class="footer">
-        💡 Hold buttons for continuous movement
-      </div>
+      <div class="footer">💡 Hold buttons for continuous movement</div>
     </div>
 
     <script>
       const buttons = document.querySelectorAll(".btnAction");
-      let ESP_IP = document.getElementById("esp-ip").value;
+      document.getElementById("esp-ip").onchange = (e) => {
+        ESP_IP = e.target.value;
+        console.log("Updated ESP IP to:", ESP_IP);
+      };
       let controller = null;
       let intervalId = null;
 
@@ -310,19 +322,19 @@
       buttons.forEach((btn) => {
         let cmd = "";
         switch (btn.textContent) {
-            case "⬆":
-                cmd = "forward";
-                break;
-            case "⬇":
-                cmd = "backward";
-                break;
-            case "⬅":
-                cmd = "left";
-                break;
-            case "➡":
-                cmd = "right";
-                break;
-            }
+          case "⬆":
+            cmd = "forward";
+            break;
+          case "⬇":
+            cmd = "backward";
+            break;
+          case "⬅":
+            cmd = "left";
+            break;
+          case "➡":
+            cmd = "right";
+            break;
+        }
 
         // Mouse event
         btn.onmousedown = () => startHold(cmd);
