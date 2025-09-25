@@ -459,7 +459,7 @@
         intervalId = setInterval(() => sendCommand(cmd), 300);
 
         buttons.forEach((btn) => {
-          if (btn.textContent === cmd[0]) return;
+          if (btn.textContent === cmd[1]) return;
           btn.disabled = true;
           btn.style.opacity = "0.6";
         });
@@ -476,19 +476,19 @@
       }
 
       buttons.forEach((btn) => {
-        let cmd = ("", "");
+        let cmd = ["", ""];
         switch (btn.textContent) {
           case "FW":
-            cmd = ("forward", "FW");
+            cmd = ["forward", "FW"];
             break;
           case "BW":
-            cmd = ("backward", "BW");
+            cmd = ["backward", "BW"];
             break;
           case "LT":
-            cmd = ("left", "LT");
+            cmd = ["left", "LT"];
             break;
           case "RT":
-            cmd = ("right", "RT");
+            cmd = ["right", "RT"];
             break;
         }
 
