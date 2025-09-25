@@ -2,7 +2,7 @@
 <html lang="th">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>ESP Remote Controller</title>
     <style>
       * {
@@ -21,6 +21,7 @@
         justify-content: center;
         padding: 20px;
         color: #333;
+        overflow-x: hidden;
       }
 
       .container {
@@ -40,6 +41,7 @@
         font-weight: 700;
         margin-bottom: 30px;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        line-height: 1.2;
       }
 
       .form-section {
@@ -106,6 +108,9 @@
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        min-height: 60px;
+        min-width: 60px;
       }
 
       .btnAction::before {
@@ -159,96 +164,230 @@
         grid-row: 2;
       }
 
-      .status-indicator {
-        margin-top: 30px;
-        padding: 15px 25px;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 1.1rem;
-        background: #e2e8f0;
-        color: #4a5568;
-        border: 2px solid #cbd5e0;
-        transition: all 0.3s ease;
-      }
-
-      .connection-status {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 20px;
-        padding: 10px 20px;
-        border-radius: 25px;
-        background: #fed7d7;
-        color: #c53030;
-        font-size: 0.9rem;
-        font-weight: 500;
-      }
-
-      .connection-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #c53030;
-        animation: pulse 2s infinite;
-      }
-
-      @keyframes pulse {
-        0% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.5;
-        }
-        100% {
-          opacity: 1;
-        }
-      }
-
       .footer {
         margin-top: 30px;
         color: #718096;
         font-size: 0.9rem;
+        line-height: 1.4;
       }
 
-      /* Responsive Design */
-      @media (max-width: 600px) {
+      /* Tablet Responsive */
+      @media (max-width: 768px) and (min-width: 601px) {
         .container {
-          padding: 25px;
-          margin: 10px;
+          padding: 35px;
+          max-width: 450px;
+        }
+
+        h1 {
+          font-size: 2.2rem;
+        }
+
+        .controls-grid {
+          max-width: 280px;
+          gap: 14px;
+        }
+
+        .btnAction {
+          padding: 18px;
+          font-size: 1.6rem;
+          min-height: 65px;
+          min-width: 65px;
+        }
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 600px) {
+        body {
+          padding: 15px;
+        }
+
+        .container {
+          padding: 25px 20px;
+          margin: 0;
+          border-radius: 15px;
+          max-width: 100%;
         }
 
         h1 {
           font-size: 2rem;
+          margin-bottom: 25px;
+        }
+
+        .form-section {
+          padding: 20px;
+          margin-bottom: 30px;
+        }
+
+        .form-section label {
+          font-size: 1rem;
+        }
+
+        #esp-ip {
+          padding: 12px 16px;
+          font-size: 1rem;
         }
 
         .controls-grid {
-          max-width: 250px;
+          max-width: 280px;
           gap: 12px;
         }
 
         .btnAction {
-          padding: 15px;
-          font-size: 1rem;
+          padding: 16px;
+          font-size: 1.4rem;
+          min-height: 70px;
+          min-width: 70px;
+          border-radius: 12px;
+        }
+
+        .footer {
+          font-size: 0.85rem;
+          margin-top: 25px;
         }
       }
 
+      /* Small Mobile */
       @media (max-width: 400px) {
+        .container {
+          padding: 20px 15px;
+        }
+
+        h1 {
+          font-size: 1.8rem;
+        }
+
         .controls-grid {
-          max-width: 200px;
+          max-width: 240px;
           gap: 10px;
         }
 
         .btnAction {
+          padding: 14px;
+          font-size: 1.2rem;
+          min-height: 65px;
+          min-width: 65px;
+        }
+
+        .form-section {
+          padding: 18px;
+        }
+      }
+
+      /* Very Small Mobile */
+      @media (max-width: 320px) {
+        .controls-grid {
+          max-width: 210px;
+          gap: 8px;
+        }
+
+        .btnAction {
           padding: 12px;
-          font-size: 0.9rem;
+          font-size: 1.1rem;
+          min-height: 60px;
+          min-width: 60px;
         }
       }
 
       /* Touch device optimizations */
       @media (hover: none) and (pointer: coarse) {
+        .btnAction {
+          min-height: 75px;
+          min-width: 75px;
+        }
+
         .btnAction:hover {
           transform: none;
           box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btnAction:active {
+          transform: scale(0.95);
+          background: linear-gradient(145deg, #5a67d8, #6b46c1);
+        }
+      }
+
+      /* Landscape orientation on mobile */
+      @media (max-height: 500px) and (orientation: landscape) {
+        body {
+          padding: 10px;
+        }
+
+        .container {
+          padding: 20px;
+          max-width: 90vw;
+        }
+
+        h1 {
+          font-size: 1.6rem;
+          margin-bottom: 15px;
+        }
+
+        .form-section {
+          margin-bottom: 20px;
+          padding: 15px;
+        }
+
+        .controls-grid {
+          max-width: 200px;
+          gap: 8px;
+        }
+
+        .btnAction {
+          min-height: 50px;
+          min-width: 50px;
+          font-size: 1rem;
+          padding: 10px;
+        }
+
+        .footer {
+          margin-top: 15px;
+          font-size: 0.8rem;
+        }
+      }
+
+      /* High DPI displays */
+      @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        .btnAction {
+          border: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+      }
+
+      /* Dark mode support */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+        }
+
+        .container {
+          background: rgba(26, 32, 44, 0.95);
+          color: #e2e8f0;
+        }
+
+        h1 {
+          color: #e2e8f0;
+        }
+
+        .form-section {
+          background: #2d3748;
+          border-color: #4a5568;
+        }
+
+        .form-section label {
+          color: #e2e8f0;
+        }
+
+        #esp-ip {
+          background: #1a202c;
+          border-color: #4a5568;
+          color: #e2e8f0;
+        }
+
+        #esp-ip:focus {
+          border-color: #667eea;
+        }
+
+        .footer {
+          color: #a0aec0;
         }
       }
     </style>
@@ -274,10 +413,17 @@
 
     <script>
       const buttons = document.querySelectorAll(".btnAction");
+      let ESP_IP = "";
+
       document.getElementById("esp-ip").onchange = (e) => {
-        ESP_IP = e.target.value;
-        console.log("Updated ESP IP to:", ESP_IP);
+        ESP_IP = e.target.value.trim();
+        if (!ESP_IP) {
+          alert("Fill your ESP IP address first.");
+        } else {
+          console.log("Updated ESP IP to:", ESP_IP);
+        }
       };
+
       let controller = null;
       let intervalId = null;
 
@@ -311,28 +457,38 @@
         sendCommand(cmd);
         // ยิงซ้ำทุก 300ms ระหว่างกดค้าง
         intervalId = setInterval(() => sendCommand(cmd), 300);
+
+        buttons.forEach((btn) => {
+          if (btn.textContent === cmd[0]) return;
+          btn.disabled = true;
+          btn.style.opacity = "0.6";
+        });
       }
 
       function endHold() {
         clearInterval(intervalId);
         intervalId = null;
         stopCommand();
+        buttons.forEach((btn) => {
+          btn.disabled = false;
+          btn.style.opacity = "1";
+        });
       }
 
       buttons.forEach((btn) => {
-        let cmd = "";
+        let cmd = ("", "");
         switch (btn.textContent) {
           case "⬆":
-            cmd = "forward";
+            cmd = ("forward", "⬆");
             break;
           case "⬇":
-            cmd = "backward";
+            cmd = ("backward", "⬇");
             break;
           case "⬅":
-            cmd = "left";
+            cmd = ("left", "⬅");
             break;
           case "➡":
-            cmd = "right";
+            cmd = ("right", "➡");
             break;
         }
 
