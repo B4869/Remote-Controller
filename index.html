@@ -429,7 +429,7 @@
 
       function sendCommand(cmd) {
         controller = new AbortController();
-        fetch(`${ESP_IP}/${cmd}`, { signal: controller.signal })
+        fetch(`${ESP_IP}/${cmd[0]}`, { signal: controller.signal })
           .then((res) => {
             if (res.ok) return res.text();
             else throw new Error("Bad response");
