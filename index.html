@@ -2,7 +2,10 @@
 <html lang="th">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
     <title>ESP Remote Controller</title>
     <style>
       * {
@@ -16,7 +19,6 @@
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
         padding: 20px;
@@ -24,29 +26,40 @@
         overflow-x: hidden;
       }
 
+      .main-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 24px;
+        width: 100%;
+        max-width: 1400px;
+      }
+
       .container {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         border-radius: 20px;
-        padding: 40px;
+        padding: 32px;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        max-width: 500px;
-        width: 100%;
+        flex: 1 1 450px;
+        min-width: 300px;
+        max-width: 600px;
         text-align: center;
       }
 
       h1 {
         color: #4a5568;
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 700;
-        margin-bottom: 30px;
+        margin-bottom: 24px;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         line-height: 1.2;
       }
 
       .form-section {
-        margin-bottom: 40px;
-        padding: 25px;
+        margin-bottom: 32px;
+        padding: 20px;
         background: #f8fafc;
         border-radius: 15px;
         border: 2px solid #e2e8f0;
@@ -57,13 +70,13 @@
         font-weight: 600;
         color: #4a5568;
         margin-bottom: 10px;
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
 
-      #esp-ip {
+      .ip-input {
         width: 100%;
-        padding: 15px 20px;
-        font-size: 1.1rem;
+        padding: 14px 18px;
+        font-size: 1rem;
         border: 2px solid #cbd5e0;
         border-radius: 12px;
         background: white;
@@ -71,25 +84,49 @@
         outline: none;
       }
 
-      #esp-ip:focus {
+      .ip-input:focus {
         border-color: #667eea;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         transform: translateY(-2px);
       }
 
+      .camera-container {
+        margin-top: 24px;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .camera-wrapper {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.25%;
+        background: #1a202c;
+      }
+
+      .camera-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
       .controls-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 1fr 1fr 1fr;
-        gap: 15px;
-        max-width: 300px;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 12px;
+        max-width: 320px;
         margin: 0 auto;
         aspect-ratio: 1;
       }
 
       .btnAction {
         padding: 20px;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         text-align: center;
         display: flex;
         align-items: center;
@@ -106,11 +143,8 @@
         overflow: hidden;
         user-select: none;
         -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
         -webkit-tap-highlight-color: transparent;
-        min-height: 60px;
-        min-width: 60px;
+        min-height: 80px;
       }
 
       .btnAction::before {
@@ -144,6 +178,11 @@
         background: linear-gradient(145deg, #5a67d8, #6b46c1);
       }
 
+      .btnAction:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
       .btnAction:nth-child(1) {
         grid-column: 2;
         grid-row: 1;
@@ -165,66 +204,103 @@
       }
 
       .footer {
-        margin-top: 30px;
+        margin-top: 24px;
         color: #718096;
         font-size: 0.9rem;
-        line-height: 1.4;
+        line-height: 1.5;
       }
 
-      /* Tablet Responsive */
-      @media (max-width: 768px) and (min-width: 601px) {
+      /* Desktop Large Screens */
+      @media (min-width: 1200px) {
+        .main-container {
+          gap: 32px;
+        }
+
         .container {
-          padding: 35px;
-          max-width: 450px;
+          padding: 40px;
         }
 
         h1 {
-          font-size: 2.2rem;
+          font-size: 2.25rem;
+        }
+
+        .controls-grid {
+          max-width: 340px;
+          gap: 16px;
+        }
+
+        .btnAction {
+          font-size: 1.4rem;
+          min-height: 90px;
+        }
+      }
+
+      /* Tablet */
+      @media (max-width: 1024px) {
+        .main-container {
+          gap: 20px;
+        }
+
+        .container {
+          flex: 1 1 400px;
+          padding: 28px;
+        }
+
+        h1 {
+          font-size: 1.85rem;
         }
 
         .controls-grid {
           max-width: 280px;
-          gap: 14px;
         }
 
         .btnAction {
-          padding: 18px;
-          font-size: 1.6rem;
-          min-height: 65px;
-          min-width: 65px;
+          font-size: 1.2rem;
+          min-height: 75px;
         }
       }
 
-      /* Mobile Responsive */
-      @media (max-width: 600px) {
+      /* Mobile */
+      @media (max-width: 768px) {
         body {
-          padding: 15px;
+          padding: 16px;
+          align-items: flex-start;
+        }
+
+        .main-container {
+          flex-direction: column;
+          gap: 20px;
+          padding-top: 20px;
         }
 
         .container {
-          padding: 25px 20px;
-          margin: 0;
-          border-radius: 15px;
+          flex: 1 1 auto;
+          width: 100%;
           max-width: 100%;
+          padding: 24px 20px;
         }
 
         h1 {
-          font-size: 2rem;
-          margin-bottom: 25px;
+          font-size: 1.75rem;
+          margin-bottom: 20px;
         }
 
         .form-section {
-          padding: 20px;
-          margin-bottom: 30px;
+          padding: 18px;
+          margin-bottom: 24px;
         }
 
         .form-section label {
-          font-size: 1rem;
+          font-size: 0.95rem;
         }
 
-        #esp-ip {
+        .ip-input {
           padding: 12px 16px;
-          font-size: 1rem;
+          font-size: 0.95rem;
+        }
+
+        .camera-container {
+          margin-top: 20px;
         }
 
         .controls-grid {
@@ -233,27 +309,40 @@
         }
 
         .btnAction {
+          font-size: 1.25rem;
+          min-height: 80px;
           padding: 16px;
-          font-size: 1.4rem;
-          min-height: 70px;
-          min-width: 70px;
-          border-radius: 12px;
         }
 
         .footer {
           font-size: 0.85rem;
-          margin-top: 25px;
+          margin-top: 20px;
         }
       }
 
       /* Small Mobile */
-      @media (max-width: 400px) {
+      @media (max-width: 480px) {
+        body {
+          padding: 12px;
+        }
+
+        .main-container {
+          gap: 16px;
+        }
+
         .container {
-          padding: 20px 15px;
+          padding: 20px 16px;
+          border-radius: 16px;
         }
 
         h1 {
-          font-size: 1.8rem;
+          font-size: 1.5rem;
+          margin-bottom: 16px;
+        }
+
+        .form-section {
+          padding: 16px;
+          margin-bottom: 20px;
         }
 
         .controls-grid {
@@ -262,37 +351,38 @@
         }
 
         .btnAction {
-          padding: 14px;
-          font-size: 1.2rem;
-          min-height: 65px;
-          min-width: 65px;
-        }
-
-        .form-section {
-          padding: 18px;
+          font-size: 1.1rem;
+          min-height: 70px;
+          padding: 12px;
+          border-radius: 12px;
         }
       }
 
-      /* Very Small Mobile */
-      @media (max-width: 320px) {
+      /* Extra Small Mobile */
+      @media (max-width: 360px) {
+        .container {
+          padding: 16px 12px;
+        }
+
+        h1 {
+          font-size: 1.35rem;
+        }
+
         .controls-grid {
-          max-width: 210px;
+          max-width: 220px;
           gap: 8px;
         }
 
         .btnAction {
-          padding: 12px;
-          font-size: 1.1rem;
-          min-height: 60px;
-          min-width: 60px;
+          font-size: 1rem;
+          min-height: 65px;
         }
       }
 
-      /* Touch device optimizations */
+      /* Touch Device Optimizations */
       @media (hover: none) and (pointer: coarse) {
         .btnAction {
-          min-height: 75px;
-          min-width: 75px;
+          min-height: 85px;
         }
 
         .btnAction:hover {
@@ -301,30 +391,33 @@
         }
 
         .btnAction:active {
-          transform: scale(0.95);
-          background: linear-gradient(145deg, #5a67d8, #6b46c1);
+          transform: scale(0.96);
         }
       }
 
-      /* Landscape orientation on mobile */
-      @media (max-height: 500px) and (orientation: landscape) {
+      /* Landscape on Mobile */
+      @media (max-height: 600px) and (orientation: landscape) {
         body {
-          padding: 10px;
+          padding: 12px;
+        }
+
+        .main-container {
+          flex-direction: row;
+          gap: 24px;
         }
 
         .container {
-          padding: 20px;
-          max-width: 90vw;
+          padding: 32px 24px;
         }
 
         h1 {
-          font-size: 1.6rem;
-          margin-bottom: 15px;
+          font-size: 1.4rem;
+          margin-bottom: 12px;
         }
 
         .form-section {
-          margin-bottom: 20px;
-          padding: 15px;
+          padding: 12px;
+          margin-bottom: 16px;
         }
 
         .controls-grid {
@@ -333,29 +426,21 @@
         }
 
         .btnAction {
-          min-height: 50px;
-          min-width: 50px;
           font-size: 1rem;
-          padding: 10px;
+          min-height: 55px;
+          padding: 8px;
         }
 
         .footer {
-          margin-top: 15px;
+          margin-top: 12px;
           font-size: 0.8rem;
         }
       }
 
-      /* High DPI displays */
-      @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-        .btnAction {
-          border: 0.5px solid rgba(255, 255, 255, 0.1);
-        }
-      }
-
-      /* Dark mode support */
+      /* Dark Mode */
       @media (prefers-color-scheme: dark) {
         body {
-          background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+          background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
         }
 
         .container {
@@ -376,13 +461,13 @@
           color: #e2e8f0;
         }
 
-        #esp-ip {
+        .ip-input {
           background: #1a202c;
           border-color: #4a5568;
           color: #e2e8f0;
         }
 
-        #esp-ip:focus {
+        .ip-input:focus {
           border-color: #667eea;
         }
 
@@ -390,31 +475,90 @@
           color: #a0aec0;
         }
       }
+
+      /* Print Styles */
+      @media print {
+        body {
+          background: white;
+        }
+
+        .container {
+          box-shadow: none;
+          border: 1px solid #e2e8f0;
+        }
+
+        .btnAction {
+          box-shadow: none;
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>Remote Controller</h1>
+    <div class="main-container">
+      <div class="container">
+        <h1>Camera Display</h1>
 
-      <div class="form-section">
-        <label for="esp-ip">IP Address</label>
-        <input type="text" id="esp-ip" placeholder="192.168.1.100" />
+        <div class="form-section">
+          <label for="camera-ip">IP Address</label>
+          <input
+            type="text"
+            id="camera-ip"
+            class="ip-input"
+            placeholder="192.168.1.100"
+          />
+        </div>
+
+        <div class="camera-container">
+          <div class="camera-wrapper">
+            <iframe
+              id="camera-stream"
+              src="about:blank"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
       </div>
+      <div class="container">
+        <h1>Remote Controller</h1>
 
-      <div class="controls-grid">
-        <button class="btnAction">FW</button>
-        <button class="btnAction">BW</button>
-        <button class="btnAction">LT</button>
-        <button class="btnAction">RT</button>
+        <div class="form-section">
+          <label for="esp-ip">IP Address</label>
+          <input
+            type="text"
+            id="esp-ip"
+            class="ip-input"
+            placeholder="192.168.1.100"
+          />
+        </div>
+
+        <div class="controls-grid">
+          <button class="btnAction">FW</button>
+          <button class="btnAction">BW</button>
+          <button class="btnAction">LT</button>
+          <button class="btnAction">RT</button>
+        </div>
+
+        <div class="footer">💡 Hold buttons for continuous movement</div>
       </div>
-
-      <div class="footer">💡 Hold buttons for continuous movement</div>
     </div>
 
     <script>
       const buttons = document.querySelectorAll(".btnAction");
       let ESP_IP = "";
 
+      // Handle Camera IP input
+      document.getElementById("camera-ip").onchange = (e) => {
+        const cameraIP = e.target.value.trim();
+        if (!cameraIP) {
+          alert("Please enter the camera IP address.");
+        } else {
+          const cameraStream = document.getElementById("camera-stream");
+          cameraStream.src = `http://${cameraIP}/mjpeg/1`;
+          console.log("Updated Camera IP to:", cameraIP);
+        }
+      };
+
+      // Handle Controller IP input
       document.getElementById("esp-ip").onchange = (e) => {
         ESP_IP = e.target.value.trim();
         if (!ESP_IP) {
@@ -426,27 +570,36 @@
 
       let controller = null;
       let intervalId = null;
+      let activeControllers = [];
 
-      function sendCommand(cmd) {
-        controller = new AbortController();
-        fetch(`${ESP_IP}/${cmd[0]}`, { signal: controller.signal })
-          .then((res) => {
-            if (res.ok) return res.text();
-            else throw new Error("Bad response");
-          })
-          .then((data) => console.log("Response:", data))
-          .catch((err) => {
-            if (err.name === "AbortError") {
-              console.log("Request aborted");
-            } else {
-              console.error(err);
-            }
+      async function sendCommand(cmd, state = "pressed") {
+        const controller = new AbortController();
+        activeControllers.push(controller);
+
+        try {
+          const res = await fetch(`http://${ESP_IP}/${cmd[0]}?${state}`, {
+            signal: controller.signal,
           });
+          if (!res.ok) throw new Error("Bad response");
+          const data = await res.text();
+          console.log("Response:", data);
+        } catch (err) {
+          if (err.name === "AbortError") {
+            console.log("Request aborted");
+          } else {
+            console.error(err);
+          }
+        } finally {
+          // ล้าง controller ออกเมื่อเสร็จ
+          activeControllers = activeControllers.filter((c) => c !== controller);
+        }
       }
 
-      function stopCommand() {
-        if (controller) controller.abort();
-        fetch(`${ESP_IP}/stop`)
+      function stopCommand(state = "released") {
+        // ยกเลิกทุก request ที่ยัง pending
+        activeControllers.forEach((c) => c.abort());
+        activeControllers = [];
+        fetch(`http://${ESP_IP}/stop?${state}`)
           .then((res) => res.text())
           .then((data) => console.log("Stopped:", data))
           .catch((err) => console.error(err));
@@ -493,19 +646,27 @@
         }
 
         // Mouse event
-        btn.onmousedown = () => startHold(cmd);
-        btn.onmouseup = endHold;
-        btn.onmouseleave = endHold;
-
-        // Touch event (มือถือ)
-        btn.ontouchstart = (e) => {
+        btn.addEventListener("mousedown", async (e) => {
           e.preventDefault();
           startHold(cmd);
-        };
-        btn.ontouchend = (e) => {
+        });
+        btn.addEventListener("mouseup", async (e) => {
           e.preventDefault();
           endHold();
-        };
+        });
+        btn.addEventListener("mouseleave", async (e) => {
+          e.preventDefault();
+          if (intervalId) endHold();
+        });
+        // Touch event (มือถือ)
+        btn.addEventListener("touchstart", async (e) => {
+          e.preventDefault();
+          startHold(cmd);
+        });
+        btn.addEventListener("touchend", async (e) => {
+          e.preventDefault();
+          endHold();
+        });
       });
     </script>
   </body>
